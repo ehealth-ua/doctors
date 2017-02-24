@@ -43,10 +43,20 @@ public class DatabaseConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("db.driver"));
-        dataSource.setUrl(env.getProperty("db.url"));
-        dataSource.setPassword(env.getProperty("db.password"));
-        dataSource.setUsername(env.getProperty("db.user"));
+        dataSource.setDriverClassName(env.getProperty("db.default.driver"));
+        dataSource.setUrl(env.getProperty("db.default.url"));
+        dataSource.setPassword(env.getProperty("db.default.password"));
+        dataSource.setUsername(env.getProperty("db.default.user"));
+        return dataSource;
+    }
+
+    @Bean
+    public DataSource smsDataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(env.getProperty("db.sms.driver"));
+        dataSource.setUrl(env.getProperty("db.sms.url"));
+        dataSource.setPassword(env.getProperty("db.sms.password"));
+        dataSource.setUsername(env.getProperty("db.sms.user"));
         return dataSource;
     }
 

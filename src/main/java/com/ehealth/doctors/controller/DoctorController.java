@@ -1,5 +1,6 @@
 package com.ehealth.doctors.controller;
 
+import com.ehealth.doctors.exception.ValidationFormatException;
 import com.ehealth.doctors.model.dto.DoctorContactCardDTO;
 import com.ehealth.doctors.model.dto.DoctorDTO;
 import com.ehealth.doctors.model.entity.Doctor;
@@ -8,14 +9,19 @@ import com.ehealth.doctors.service.DoctorService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/doctor",  produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE)
 @ResponseBody
+@Validated
 public class DoctorController {
 
     private final DoctorService doctorService;
@@ -43,8 +49,9 @@ public class DoctorController {
     }
 
     @PostMapping
-    public DoctorDTO create(@RequestBody DoctorDTO doctorDto) throws Exception {
-        if (doctorDto.getId() != null) throw new Exception();
+    public DoctorDTO create(@Valid @RequestBody DoctorDTO doctorDto, BindingResult bindingResult) throws Exception {
+        if (doctorDto.getId() != null) throw new ValidationFormatException("id", "должно быть пустое");
+        if (bindingResult.hasErrors()) throw new ValidationFormatException(bindingResult);
 
         final Doctor doctor = mapper.map(doctorDto, Doctor.class);
 
@@ -54,7 +61,10 @@ public class DoctorController {
     }
 
     @PutMapping
-    public DoctorDTO update(@RequestBody DoctorDTO doctorDto) {
+    public DoctorDTO update(@Valid @RequestBody DoctorDTO doctorDto, BindingResult bindingResult) throws Exception {
+        if (doctorDto.getId() == null) throw new ValidationFormatException("id", "должно быть не пустое");
+        if (bindingResult.hasErrors()) throw new ValidationFormatException(bindingResult);
+
         final Doctor doctor = mapper.map(doctorDto, Doctor.class);
 
         doctorService.save(doctor);
