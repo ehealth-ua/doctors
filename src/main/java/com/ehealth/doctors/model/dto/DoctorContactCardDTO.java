@@ -2,11 +2,14 @@ package com.ehealth.doctors.model.dto;
 
 import com.ehealth.doctors.model.entity.ContactType;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class DoctorContactCardDTO {
     private UUID id;
+    @NotNull
     private ContactType type;
+    @NotNull
     private String value;
     private boolean isVerified;
     private boolean isPrimary;

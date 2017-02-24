@@ -21,6 +21,10 @@ public class DoctorService {
         return iDoctorDAO.findOne(id);
     }
 
+    public void delete(UUID id) {
+        iDoctorDAO.delete(id);
+    }
+
     public Iterable<Doctor> list() {
         return iDoctorDAO.findAll();
     }

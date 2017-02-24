@@ -1,14 +1,20 @@
 package com.ehealth.doctors.model.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 
 public class DoctorLicenseDTO implements java.io.Serializable {
     private UUID id;
+    @NotNull
     private String issuedBy;
+    @NotNull
     private String category;
+    @NotNull
     private String orderNo;
+    @NotNull
     private String dateIssued;
+    @NotNull
     private String dateExpiry;
 
     public UUID getId() {

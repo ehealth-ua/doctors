@@ -8,13 +8,14 @@ import com.ehealth.doctors.model.entity.DoctorContactCard;
 import com.ehealth.doctors.service.DoctorService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,6 +73,13 @@ public class DoctorController {
         return mapper.map(doctor, DoctorDTO.class);
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity delete(@PathVariable UUID id) {
+        doctorService.delete(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping(value = "/{id}/contacts")
     public List<DoctorContactCardDTO> getContacts(@PathVariable UUID id) {
         Doctor doctor = doctorService.getBy(id);
@@ -101,5 +109,16 @@ public class DoctorController {
         doctorService.save(doctor);
 
         return mapper.map(contactCard, DoctorContactCardDTO.class);
+    }
+
+    @DeleteMapping(value = "/{id}/contacts/{contactId}")
+    public ResponseEntity deleteContacts(@PathVariable UUID id, @PathVariable UUID contactId) throws Exception {
+        final Doctor doctor = doctorService.getBy(id);
+
+        doctor.getContacts().removeIf(con -> con.getId().equals(contactId));
+
+        doctorService.save(doctor);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
