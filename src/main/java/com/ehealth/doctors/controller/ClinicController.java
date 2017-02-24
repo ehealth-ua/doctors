@@ -6,6 +6,7 @@ import com.ehealth.doctors.model.entity.Clinic;
 import com.ehealth.doctors.model.entity.ClinicDoctorBinding;
 import com.ehealth.doctors.model.entity.Doctor;
 import com.ehealth.doctors.service.ClinicService;
+import io.swagger.annotations.Api;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clinic")
+@ResponseBody
+@Api(description = "Клініки")
 public class ClinicController {
 
     private final ClinicService clinicService;

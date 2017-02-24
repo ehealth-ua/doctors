@@ -6,13 +6,14 @@ import com.ehealth.doctors.model.dto.DoctorDTO;
 import com.ehealth.doctors.model.entity.Doctor;
 import com.ehealth.doctors.model.entity.DoctorContactCard;
 import com.ehealth.doctors.service.DoctorService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,7 +23,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE)
 @ResponseBody
-@Validated
+@Api(description = "Дохтори (http://mwg.dp.ua/dohtory.txt)")
 public class DoctorController {
 
     private final DoctorService doctorService;
@@ -35,6 +36,7 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
+    @ApiOperation("Доктор за його id")
     @GetMapping(value = "/{id}")
     public DoctorDTO get(@PathVariable UUID id) {
         Doctor doctor = doctorService.getBy(id);
@@ -42,6 +44,7 @@ public class DoctorController {
         return mapper.map(doctor, DoctorDTO.class);
     }
 
+    @ApiOperation("Список Докторів")
     @GetMapping
     public List<DoctorDTO> list() {
         Iterable<Doctor> doctors = doctorService.list();
@@ -49,6 +52,7 @@ public class DoctorController {
         return mapper.mapAsList(doctors, DoctorDTO.class);
     }
 
+    @ApiOperation("Створити Доктора")
     @PostMapping
     public DoctorDTO create(@Valid @RequestBody DoctorDTO doctorDto, BindingResult bindingResult) throws Exception {
         if (doctorDto.getId() != null) throw new ValidationFormatException("id", "должно быть пустое");
@@ -61,6 +65,7 @@ public class DoctorController {
         return mapper.map(doctor, DoctorDTO.class);
     }
 
+    @ApiOperation("Оновити Доктора")
     @PutMapping
     public DoctorDTO update(@Valid @RequestBody DoctorDTO doctorDto, BindingResult bindingResult) throws Exception {
         if (doctorDto.getId() == null) throw new ValidationFormatException("id", "должно быть не пустое");
@@ -73,6 +78,7 @@ public class DoctorController {
         return mapper.map(doctor, DoctorDTO.class);
     }
 
+    @ApiOperation("Видалити Доктора за його id")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@PathVariable UUID id) {
         doctorService.delete(id);
