@@ -9,6 +9,8 @@
     <url>http://maven.apache.org</url>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <spring.version>4.3.6.RELEASE</spring.version>
         <spring.data.version>1.11.0.RELEASE</spring.data.version>
         <spring.security.version>4.2.1.RELEASE</spring.security.version>
@@ -177,7 +179,7 @@
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
-                        <encoding>Cp1251</encoding>
+                        <encoding>${project.build.sourceEncoding}</encoding>
                     </configuration>
                 </plugin>
                 <plugin>

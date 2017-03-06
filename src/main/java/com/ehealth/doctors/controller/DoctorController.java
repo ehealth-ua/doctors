@@ -23,7 +23,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/doctor", produces = MediaType.APPLICATION_JSON_VALUE)
 @ResponseBody
-@Api(description = "Дохтори")
+@Api(description = "Доктори")
 public class DoctorController {
 
     private final DoctorService doctorService;
